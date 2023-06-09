@@ -1,35 +1,45 @@
 import React from 'react';
-import { MdDelete } from 'react-icons/md';
-import PropTypes from 'prop-types';
-import ButtonIcon from '../ButtonIcon';
-import { padaddLeadingZero } from 'utils';
-import { ContactsList, ContactItem, ContactText } from './ContactList.styled';
+import { PropTypes } from 'prop-types';
+import { ContactsItem } from './ContactItem';
+import { ContactsList } from './ContactList.styled';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeContact } from 'redux/contactsSlice';
+import { getContacts, getFilter } from 'redux/selectors';
 
-const ContactList = ({ items, onDeleteContact }) => {
+const ContactList = () => {
+  const dispatch = useDispatch();
+  const contacts = useSelector(getContacts);
+  const filter = useSelector(getFilter);
+
+  const onDeleteContact = contactId => {
+    dispatch(removeContact(contactId));
+  };
+
+  const visibleContacts = contacts
+    .filter(contact =>
+      contact.name.toLowerCase().includes(filter.toLowerCase())
+    )
+    .sort((first, second) => first.name.localeCompare(second.name));
+
   return (
-    <ContactsList>
-      {items.map(({ id, name, number }, index) => (
-        <ContactItem key={id}>
-          <ContactText>
-            {padaddLeadingZero(index + 1)}. {name}: {number}
-          </ContactText>
-          <ButtonIcon onClick={() => onDeleteContact(id)}>
-            <MdDelete />
-          </ButtonIcon>
-        </ContactItem>
-      ))}
-    </ContactsList>
+    <>
+      <ContactsList>
+        {visibleContacts.map(({ id, name, number }, index) => (
+          <ContactsItem
+            key={id}
+            index={index}
+            name={name}
+            number={number}
+            onClick={() => onDeleteContact(id)}
+          />
+        ))}
+      </ContactsList>
+    </>
   );
 };
-export default ContactList;
 
 ContactList.propTypes = {
-  items: PropTypes.arrayOf(
-    PropTypes.shape({
-      id: PropTypes.string.isRequired,
-      name: PropTypes.string.isRequired,
-      number: PropTypes.string.isRequired,
-    })
-  ).isRequired,
-  onDeleteContact: PropTypes.func.isRequired,
+  key: PropTypes.string,
 };
+
+export default ContactList;
