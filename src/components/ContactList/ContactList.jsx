@@ -11,7 +11,7 @@ const ContactList = () => {
   const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
 
-  const onDeleteContact = contactId => {
+  const handleDeleteContact = contactId => {
     dispatch(removeContact(contactId));
   };
 
@@ -30,7 +30,7 @@ const ContactList = () => {
             index={index}
             name={name}
             number={number}
-            onClick={() => onDeleteContact(id)}
+            onClick={() => handleDeleteContact(id)}
           />
         ))}
       </ContactsList>

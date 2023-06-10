@@ -8,7 +8,7 @@ const Filter = () => {
   const dispatch = useDispatch();
   const filter = useSelector(getFilter);
 
-  const changeFilter = evt => {
+  const handleChangeFilter = evt => {
     dispatch(addFilter(evt.target.value));
   };
 
@@ -20,7 +20,7 @@ const Filter = () => {
         type="text"
         name="name"
         value={filter}
-        onChange={changeFilter}
+        onChange={handleChangeFilter}
       />
     </FilterBox>
   );

@@ -17,7 +17,7 @@ import {
   AddBtn,
 } from './ContactForm.styled';
 
-const ContactForm = props => {
+const ContactForm = () => {
   const initialValues = {
     name: '',
     number: '',
@@ -29,11 +29,6 @@ const ContactForm = props => {
   const handleSubmit = (values, actions) => {
     const { name, number } = values;
 
-    const contact = {
-      id: nanoid(),
-      name,
-      number,
-    };
     const isExist = contacts.find(
       contact =>
         contact.name.toLowerCase() === name.toLowerCase() ||
@@ -43,6 +38,11 @@ const ContactForm = props => {
       alert(`This contact is already in contacts.`);
       return;
     }
+    const contact = {
+      id: nanoid(),
+      name,
+      number,
+    };
 
     dispatch(addContact(contact));
 
